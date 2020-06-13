@@ -12,7 +12,7 @@ cluster.solution <- function(x, alpha.cut, tau.cut) {
 		next.tau <- x[i,"tau.def"]
 		next.cnt <- x[i,"count"]
 		next.mse.r <- 1.0/x[i,"mse"]
-		if(abs(next.alpha-cur.alpha)<alpha.cut & abs(next.tau-cur.tau)<tau.cut) {  # same cluster
+		if((abs(next.alpha-cur.alpha)<alpha.cut) & (abs(next.tau-cur.tau)<tau.cut)) {  # same cluster
 			# update: weighted average
 			cur.wt <- cur.cnt/(cur.cnt+next.cnt)
 			next.wt <- next.cnt/(cur.cnt+next.cnt)
@@ -144,7 +144,7 @@ grid.search.alpha <- function(seg.data, snv.data, alpha.min=0.2, alpha.max=1.0, 
 	search.res <- search.res[oo,]
 	rownames(search.res) <- NULL
 
-	if(nrow(search.res)>1) {  # do clustering
+	if(nrow(search.res) > 2) {  # do clustering
 	search.res <- cluster.solution(search.res, alpha.cut=0.10, tau.cut=0.15)
 	}
 	
@@ -391,8 +391,8 @@ grid.search.alpha.simple <- function(seg.data, alpha.min=0.2, alpha.max=1.0, tau
 	search.res <- search.res[oo,]
 	rownames(search.res) <- NULL
 	
-	if(1) {  # do clustering
-	search.res <- cluster.solution(search.res, alpha.cut=0.10, tau.cut=0.15)
+	if(nrow(search.res) > 2) {  # do clustering
+	  search.res <- cluster.solution(search.res, alpha.cut=0.10, tau.cut=0.15)
 	}
 	
 	# filtering out impossible solutions
